@@ -93,14 +93,14 @@ void loop()
         Serial.print(temperature);
         Serial.println(" °C");
     }
-    if (baro.getAltitude(altitude, temperature)) {
-        Serial.print("Altitude: ");
-        Serial.print(altitude);
-        Serial.println(" m");
-        Serial.print("Temperature: ");
-        Serial.print(temperature);
-        Serial.println(" °C");
-    }
+    // if (baro.getAltitude(altitude, temperature)) {
+    //     Serial.print("Altitude: ");
+    //     Serial.print(altitude);
+    //     Serial.println(" m");
+    //     Serial.print("Temperature: ");
+    //     Serial.print(temperature);
+    //     Serial.println(" °C");
+    // }
 
     delay(500);
 }

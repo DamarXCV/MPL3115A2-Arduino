@@ -291,7 +291,7 @@ boolean MPL3115A2::getTemperature(float& temp)
     // read data
     uint8_t* buffer = new uint8_t[2];
     readBlock(buffer, MPL3115A2_REGISTER_OUT_T_MSB, 2);
-    temp = float(uint16_t(buffer[3]) << 8 | uint16_t(buffer[4])) / 256.0f;
+    temp = float(uint16_t(buffer[0]) << 8 | uint16_t(buffer[1])) / 256.0f;
     return true;
 }
 

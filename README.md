@@ -7,3 +7,5 @@ Missing functions for
 * maximum temperature register
 * FIFO
 * Interrupts
+
+fix the first reading after switching alt mode
