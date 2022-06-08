@@ -1,6 +1,6 @@
 #include "MPL3115A2.h"
 
-MPL3115A2::MPL3115A2 baro;
+MPL3115A2 baro;
 
 void setup()
 {

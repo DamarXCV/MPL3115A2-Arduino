@@ -1,7 +1,5 @@
 #include "MPL3115A2.h"
 
-namespace MPL3115A2 {
-
 MPL3115A2::MPL3115A2(int address)
     : I2C(&Wire, address)
 {
@@ -52,14 +50,16 @@ void MPL3115A2::setSeaPressure(uint32_t sp)
     buffer[0] = bar >> 8;
     buffer[1] = bar & 0xFF;
     writeBlock(buffer, MPL3115A2_REGISTER_BAR_IN_MSB, 2);
+    delete[] buffer;
 }
 
 uint32_t MPL3115A2::getSeaPressure()
 {
     uint8_t* buffer = new uint8_t[2];
     readBlock(buffer, MPL3115A2_REGISTER_BAR_IN_MSB, 2);
-
-    return uint32_t(uint16_t(buffer[0] << 8) | uint16_t(buffer[1])) * 2;
+    uint32_t value = uint16_t(buffer[0] << 8) | uint16_t(buffer[1]) * 2;
+    delete[] buffer;
+    return value;
 }
 
 void MPL3115A2::setPressureOffset(int16_t offset)
@@ -130,10 +130,9 @@ boolean MPL3115A2::getPressure(float& pressure, float& temp)
     // read data
     uint8_t* buffer = new uint8_t[5];
     readBlock(buffer, MPL3115A2_REGISTER_OUT_P_MSB, 5);
-
     pressure = float(uint32_t(buffer[0]) << 16 | uint32_t(buffer[1]) << 8 | uint32_t(buffer[2])) / 64.0f;
     temp = float(uint16_t(buffer[3]) << 8 | uint16_t(buffer[4])) / 256.0f;
-
+    delete[] buffer;
     return true;
 }
 
@@ -172,9 +171,8 @@ boolean MPL3115A2::getPressure(float& pressure)
     // read data
     uint8_t* buffer = new uint8_t[5];
     readBlock(buffer, MPL3115A2_REGISTER_OUT_P_MSB, 5);
-
     pressure = float(uint32_t(buffer[0]) << 16 | uint32_t(buffer[1]) << 8 | uint32_t(buffer[2])) / 64.0f;
-
+    delete[] buffer;
     return true;
 }
 
@@ -187,7 +185,7 @@ boolean MPL3115A2::getAltitude(float& altitude, float& temp)
         if (val != 0 && i == MPL3115A2_READ_TRIES - 1) {
             return false;
         } else if (val != 0) {
-            delayMicroseconds(3);
+            delayMicroseconds(4);
         } else {
             break;
         }
@@ -204,7 +202,7 @@ boolean MPL3115A2::getAltitude(float& altitude, float& temp)
         if (val == 0 && i == MPL3115A2_READ_TRIES - 1) {
             return false;
         } else if (val == 0) {
-            delayMicroseconds(10);
+            delayMicroseconds(4);
         } else {
             break;
         }
@@ -215,6 +213,7 @@ boolean MPL3115A2::getAltitude(float& altitude, float& temp)
     readBlock(buffer, MPL3115A2_REGISTER_OUT_P_MSB, 5);
     altitude = float(uint32_t(buffer[0]) << 24 | uint32_t(buffer[1]) << 16 | uint32_t(buffer[2]) << 8) / 65536.0f;
     temp = float(uint16_t(buffer[3]) << 8 | uint16_t(buffer[4])) / 256.0f;
+    delete[] buffer;
     return true;
 }
 
@@ -227,7 +226,7 @@ boolean MPL3115A2::getAltitude(float& altitude)
         if (val != 0 && i == MPL3115A2_READ_TRIES - 1) {
             return false;
         } else if (val != 0) {
-            delayMicroseconds(3);
+            delayMicroseconds(4);
         } else {
             break;
         }
@@ -244,7 +243,7 @@ boolean MPL3115A2::getAltitude(float& altitude)
         if (val == 0 && i == MPL3115A2_READ_TRIES - 1) {
             return false;
         } else if (val == 0) {
-            delayMicroseconds(10);
+            delayMicroseconds(4);
         } else {
             break;
         }
@@ -254,6 +253,7 @@ boolean MPL3115A2::getAltitude(float& altitude)
     uint8_t* buffer = new uint8_t[5];
     readBlock(buffer, MPL3115A2_REGISTER_OUT_P_MSB, 5);
     altitude = float(uint32_t(buffer[0]) << 24 | uint32_t(buffer[1]) << 16 | uint32_t(buffer[2]) << 8) / 65536.0f;
+    delete[] buffer;
     return true;
 }
 
@@ -266,7 +266,7 @@ boolean MPL3115A2::getTemperature(float& temp)
         if (val != 0 && i == MPL3115A2_READ_TRIES - 1) {
             return false;
         } else if (val != 0) {
-            delayMicroseconds(3);
+            delayMicroseconds(4);
         } else {
             break;
         }
@@ -282,7 +282,7 @@ boolean MPL3115A2::getTemperature(float& temp)
         if (val == 0 && i == MPL3115A2_READ_TRIES - 1) {
             return false;
         } else if (val == 0) {
-            delayMicroseconds(10);
+            delayMicroseconds(4);
         } else {
             break;
         }
@@ -292,7 +292,6 @@ boolean MPL3115A2::getTemperature(float& temp)
     uint8_t* buffer = new uint8_t[2];
     readBlock(buffer, MPL3115A2_REGISTER_OUT_T_MSB, 2);
     temp = float(uint16_t(buffer[0]) << 8 | uint16_t(buffer[1])) / 256.0f;
+    delete[] buffer;
     return true;
 }
-
-} // namespace MPL3115A2

@@ -167,8 +167,6 @@
 #define MPL3115A2_CTRL_REG5_BIT_INT_CFG_FIFO 0x40 // Interrupt is routed to INT1
 #define MPL3115A2_CTRL_REG5_BIT_INT_EN_DRDY 0x80 // Interrupt is routed to INT1
 
-namespace MPL3115A2 {
-
 class MPL3115A2 : I2C {
 private:
     TwoWire* wire;
@@ -210,5 +208,3 @@ public:
     boolean getAltitude(float& altitude);
     boolean getTemperature(float& temp);
 };
-
-} // namespace MPL3115A2
