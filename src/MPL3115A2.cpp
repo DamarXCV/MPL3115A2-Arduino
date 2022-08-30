@@ -252,7 +252,7 @@ boolean MPL3115A2::getAltitude(float& altitude)
     // read data
     uint8_t* buffer = new uint8_t[5];
     readBlock(buffer, MPL3115A2_REGISTER_OUT_P_MSB, 5);
-    altitude = float(uint32_t(buffer[0]) << 24 | uint32_t(buffer[1]) << 16 | uint32_t(buffer[2]) << 8) / 65536.0f;
+    altitude = float(uint32_t(buffer[0]) << 24 | uint32_t(buffer[1]) << 16 | uint32_t(buffer[2]) << 8) / 655.360f;
     delete[] buffer;
     return true;
 }
